@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
         Employee [] workers = new Employee[20];
@@ -19,6 +18,7 @@ public class Main {
             System.out.println("Выберите действие:\n1.[Добавить сотрудника]\n2.[Удалить сотрудника]\n3.[Вывести информацию]\n4.[Выйти]");
             Scanner in = new Scanner(System.in);
             int firstAction = in.nextInt();
+            in.nextLine();
             System.out.println("===============================================================");
             if (firstAction == 4) {
                 break;
@@ -32,10 +32,24 @@ public class Main {
                     String surname = in.nextLine();
                     System.out.println("Введите отчество: ");
                     String patronymic = in.nextLine();
-                    System.out.println("Введите отдел: ");
-                    department = in.nextInt();
-                    System.out.println("Введите зарплату: ");
-                    salary = in.nextInt();
+                    while (true) {
+                        System.out.println("Введите отдел: ");
+                        department = in.nextInt();
+                        if (department > 0 && department < 6) {
+                            break;
+                        } else {
+                            System.out.println("Такого отдела не существует.");
+                        }
+                    }
+                    while (true) {
+                        System.out.println("Введите зарплату: ");
+                        salary = in.nextInt();
+                        if (salary >= 0) {
+                            break;
+                        } else {
+                            System.out.println("Зарплата не может быть отрицательным числом.");
+                        }
+                    }
                     employee++;
                     for (int i = 0; i < 20; i++) {
                         if (workers[i] == null) {
@@ -69,21 +83,15 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("===============================================================");
-                    System.out.println("Выберите действие:\n1.[Вывести информацию о всех сотрудниках]\n2.[Вывести информацию о сотруднике по ID]\n3.[Статистика]\n4.[Выйти]");
+                    System.out.println("Выберите действие:\n1.[Вывести информацию о всех сотрудниках]\n2.[Вывести информацию о сотруднике по ID]\n3.[Вывести список сотрудников]\n4.[Статистика]\n5.[Выйти]");
                     int secondAction = in.nextInt();
                     System.out.println("===============================================================");
-                    if (secondAction == 4) {
+                    if (secondAction == 5) {
                         break;
                     }
                     switch (secondAction) {
                         case 1:
-                            for (int i = 0; i < 20; i++) {
-                                if (workers[i] != null) {
-                                    System.out.println("===============================================================");
-                                    System.out.println(workers[i].toString());
-                                    System.out.println("===============================================================");
-                                }
-                            }
+                            allEmployees(workers);
                             break;
                         case 2:
                             System.out.println("===============================================================");
@@ -130,32 +138,13 @@ public class Main {
                             index = -1;
                             break;
                         case 3:
-                            int sum = 0;
-                            int maxSalary = 0;
-                            int minSalary = 999999999;
-                            int maxSalaryIndex = -1;
-                            int minSalaryIndex = -1;
-                            int numberOfWorkers = 0;
-                            float averageValue = 0f;
-                            for (int i = 0; i < 20; i++) {
-                                if (workers[i] != null) {
-                                    sum = sum + workers[i].getSalary();
-                                    if (maxSalary < workers[i].getSalary()) {
-                                        maxSalary = workers[i].getSalary();
-                                        maxSalaryIndex = i;
-                                    }
-                                    if (minSalary > workers[i].getSalary()) {
-                                        minSalary = workers[i].getSalary();
-                                        minSalaryIndex = i;
-                                    }
-                                    numberOfWorkers++;
-                                }
-                            }
-                            averageValue = (float) sum / numberOfWorkers;
-                            System.out.println("Всего на зарплату в месяц уходит " + sum + " рублей.");
-                            System.out.println("Самая большая зарплата у сотрудника с ID:" + workers[maxSalaryIndex].getID() + ".");
-                            System.out.println("Самая маленькая зарплата у сотрудника с ID:" + workers[minSalaryIndex].getID() + ".");
-                            System.out.println("Средний показатель зарплаты равен " + averageValue + " рублей.");
+                            listOfEmployees(workers);
+                            break;
+                        case 4:
+                            System.out.println("Всего на зарплату в месяц уходит " + sumSalary(workers) + " рублей.");
+                            System.out.println("Самая большая зарплата у сотрудника с ID:" + workers[maxSalary(workers)].getID() + ".");
+                            System.out.println("Самая маленькая зарплата у сотрудника с ID:" + workers[minSalary(workers)].getID() + ".");
+                            System.out.println("Средний показатель зарплаты равен " + averageValue(workers) + " рублей.");
                             break;
                         default:
                             System.out.println("Нет такого действия");
@@ -166,5 +155,68 @@ public class Main {
             }
         }
 
+    }
+    public static void allEmployees(Employee [] workers) {
+        for (int i = 0; i < 20; i++) {
+            if (workers[i] != null) {
+                System.out.println("===============================================================");
+                System.out.println(workers[i].toString());
+                System.out.println("===============================================================");
+            }
+        }
+    }
+    public static int maxSalary (Employee [] workers) {
+        int maxSalary = 0;
+        int maxSalaryIndex = -1;
+        for (int i = 0; i < 20; i++) {
+            if (workers[i] != null) {
+                if (maxSalary < workers[i].getSalary()) {
+                    maxSalary = workers[i].getSalary();
+                    maxSalaryIndex = i;
+                }
+            }
+        }
+        return maxSalaryIndex;
+    }
+    public static int minSalary (Employee [] workers) {
+        int minSalary = 999999999;
+        int minSalaryIndex = -1;
+        for (int i = 0; i < 20; i++) {
+            if (workers[i] != null) {
+                if (minSalary > workers[i].getSalary()) {
+                    minSalary = workers[i].getSalary();
+                    minSalaryIndex = i;
+                }
+            }
+        }
+        return minSalaryIndex;
+    }
+    public static int sumSalary (Employee [] workers) {
+        int sumSalary = 0;
+        for (int i = 0; i < 20; i++) {
+            if (workers[i] != null) {
+                sumSalary = sumSalary + workers[i].getSalary();
+            }
+        }
+        return sumSalary;
+    }
+    public static int numberOfWorkers (Employee [] workers) {
+        int numberOfWorkers = 0;
+        for (int i = 0; i < 20; i++) {
+            if (workers[i] != null) {
+                numberOfWorkers++;
+            }
+        }
+        return numberOfWorkers;
+    }
+    public static void listOfEmployees (Employee [] workers) {
+        for (int i = 0; i < 20; i++) {
+            if (workers[i] != null) {
+                System.out.println(workers[i].getTwoName() + " " + workers[i].getOneName() + " " + workers[i].getThreeName());
+            }
+        }
+    }
+    public static float averageValue (Employee [] workers) {
+        return (float)sumSalary(workers)/numberOfWorkers(workers);
     }
 }
