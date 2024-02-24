@@ -8,12 +8,29 @@ public class Main {
         int numEmployee = 20;
         Scanner in = new Scanner(System.in);
         Employee [] worker = new Employee [numEmployee];
-        EmployeeBook workers = new EmployeeBook(worker);
+        EmployeeBook workers = new EmployeeBook(worker, numEmployee);
         int action;
         int ID;
         int salary;
         int department;
         String text;
+        /*workers.addWorker("Андрей", "Сатыпов", "Генадиевич", 1, 390500);
+        workers.addWorker("Алёша", "Алёшов", "Алёшевич", 1, 195300);
+        workers.addWorker("Светлана", "Миронова", "Григорьевна", 2, 96800);
+        workers.addWorker("Ирина", "Евстегнеева", "Николаевна", 2, 98400);
+        workers.addWorker("Станислав", "Михайлов", "Ерефемович", 3, 122700);
+        workers.addWorker("Илья", "Кубинских", "Алексеевич", 3, 99700);
+        workers.addWorker("Арина", "Ганина", "Сергеевна", 4, 81400);
+        workers.addWorker("Алиса", "Турова", "Алексеевна", 4, 50050);
+        workers.addWorker("Роман", "Шапырин", "Акакиевич", 5, 49200);
+        workers.addWorker("Андрей", "Щукин", "Мариванович", 5, 47300);
+        workers.addWorker("Алип", "Стружков", "Сверлович", 5, 30200);
+        workers.addWorker("Дмитрий", "Ганин", "Сергеевич", 5, 32100);
+        workers.addWorker("Иван", "Разборов", "Полётович", 5, 30000);
+        workers.addWorker("Неиван", "Сборов", "Посадкович", 5, 29999);
+        workers.addWorker("Иоан", "Рюриков", "Грознович", 5, 39000);
+        workers.addWorker("Лена", "Головач", "Эфиопецовна", 5, 52200);
+        workers.addWorker("Диман", "Диванов", "Матрасович", 5, 50900);*/
         while (true) {
             System.out.println("===============================================================");
             System.out.println("Выберите действие:\n1.[Добавить сотрудника]\n2.[Удалить сотрудника]\n3.[Вывести информацию]\n4.[Проиндексировать зарплату]\n5.[Выйти]");
@@ -58,7 +75,7 @@ public class Main {
                     System.out.println("===============================================================");
                     System.out.println("Введите ID сотрудника:");
                     ID = in.nextInt();
-                    workers.delWorker(workers.getWorker(ID));
+                    workers.delWorker(ID);
                     System.out.println("Информация успешно обновлена.");
                     System.out.println("===============================================================");
                     break;
@@ -90,16 +107,30 @@ public class Main {
                             switch (action) {
                                 case 1:
                                     System.out.println("===============================================================");
-                                    System.out.println("Введите новый номер отдела:");
+                                    while (true) {
+                                    System.out.println("Введите номер отдела:");
                                     department = in.nextInt();
+                                    if (department > 0 && department < 6) {
+                                        break;
+                                    } else {
+                                        System.out.println("Такого отдела не существует.");
+                                    }
+                                }
                                     workers.getWorker(ID).setDepartment(department);
                                     System.out.println("Информация успешно обновлена.");
                                     System.out.println("===============================================================");
                                     break;
                                 case 2:
                                     System.out.println("===============================================================");
-                                    System.out.println("Введите новую зарплату:");
-                                    salary = in.nextInt();
+                                    while (true) {
+                                        System.out.println("Введите зарплату:");
+                                        salary = in.nextInt();
+                                        if (salary >= 0) {
+                                            break;
+                                        } else {
+                                            System.out.println("Зарплата не может быть отрицательным числом.");
+                                        }
+                                    }
                                     workers.getWorker(ID).setSalary(salary);
                                     System.out.println("Информация успешно обновлена.");
                                     System.out.println("===============================================================");
