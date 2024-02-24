@@ -6,7 +6,7 @@ public class Employee {
     private int salary;
     private int ID;
 
-    public Employee (String oneName, String twoName, String threeName, int department, int salary, int ID){
+    public Employee (String oneName, String twoName, String threeName, int department, int salary, int ID) {
         this.oneName = oneName;
         this.twoName = twoName;
         this.threeName = threeName;
@@ -59,7 +59,11 @@ public class Employee {
 
     @Override
     public String toString () {
-        return "Ф.И.О.: " + this.twoName + " " + this.oneName + " " + this.threeName + "\nID: " + this.ID + "\nОтдел: " + this.department + "\nЗарплата: " + this.salary;
+        if (this != null) {
+            return "Ф.И.О.: " + this.twoName + " " + this.oneName + " " + this.threeName + "\nID: " + this.ID + "\nОтдел: " + this.department + "\nЗарплата: " + this.salary;
+        } else {
+            return "null";
+        }
     }
 
 
